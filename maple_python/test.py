@@ -52,7 +52,7 @@ def Matching(base_page,target_image='zero_target.png',thr=0.9): #페이지 1차�
         
         res=cv2.matchTemplate(imgray,template,cv2.TM_CCOEFF_NORMED)
         loc = np.where(res>=thr)
-        
+
         base= cv2.cvtColor(np.array(i_base.page_image),cv2.COLOR_RGB2BGR)
         base= cv2.cvtColor(np.array(base),cv2.COLOR_RGB2BGR)
         for pt in zip(*loc[::-1]):
@@ -119,7 +119,7 @@ def skill_classification(job,page_arr): # 'adel', page배열넣기
         #코어레벨 측정하는 공간!
         page_arr[page_count].skill_level=[]
         for skill in page.skill_image:
-            page_arr[page_count].skill_level.append(search_image(skill,level_image,0.99)+1)
+            page_arr[page_count].skill_level.append(search_image(skill,level_image,1)+1)
         page_count=page_count+1
 
 
