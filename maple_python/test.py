@@ -17,6 +17,7 @@ import itertools
 from collections import OrderedDict
 from numpyencoder import NumpyEncoder
 import shutil
+from skimage.metrics import structural_similarity as ssim
 class page:
     def __init__(self,page_image):
         self.page_image=page_image
@@ -34,7 +35,21 @@ def search_image(base,template_arr,thr=0.9): #pil형 이미지 두개 input base
                 break
         return return_value        
         
-        
+def skill_check(base,template_arr): #pil형 이미지 두개 input base이미지에 template 이미지가 있다면 true
+        imgray = cv2.cvtColor(np.array(base.crop((10,3,30,13))),cv2.COLOR_BGR2GRAY)
+        focus=0
+        focus_simm=0
+        count=0
+        sim_arr=[]
+        for temp in template_arr:
+            template=cv2.cvtColor(np.array(temp),cv2.COLOR_BGR2GRAY)
+            sim=ssim(imgray,template)
+            sim_arr.append(round(sim,4))
+            if sim>focus_simm:
+                focus=count
+                focus_simm=sim
+            count=count+1
+        return focus#focus,sim_arr
         
         
         
@@ -119,7 +134,7 @@ def skill_classification(job,page_arr): # 'adel', page배열넣기
         #코어레벨 측정하는 공간!
         page_arr[page_count].skill_level=[]
         for skill in page.skill_image:
-            page_arr[page_count].skill_level.append(search_image(skill,level_image,1)+1)
+            page_arr[page_count].skill_level.append(skill_check(skill,level_image)+1)
         page_count=page_count+1
 
 
@@ -140,6 +155,7 @@ def MakeDF(paged):#중복제외한 강화코어 출력
             skill_count=skill_count+1
             df.loc[len(df)] = tmp
             count=count+1
+    df.to_csv("level.csv")
     s= df.iloc[:,-3]=df.iloc[:,-3].replace(Series(data=[1,3,4,6,8,10,13,15,19,22,26,30,34,                                              
                                                         39,44,49,55,61,67,74,80,88,95,103,111], index=range(1,26)))
     df.iloc[:,-3]=df.iloc[:,-2].replace(df.groupby(df.iloc[:,-2]).sum().iloc[:,0])
