@@ -20,7 +20,7 @@ const check_del_folder = function(path,session) {
   if (fs.existsSync(path)) {               
     fs.readdirSync(path).forEach(function(file, index){   
       let curPath = path + "/" + file;
-      if((new Date().getTime()-fs.lstatSync(curPath).ctime)/1000>1000){
+      if((new Date().getTime()-fs.lstatSync(curPath).ctime)/1000>100){
         deleteFolderRecursive(curPath);
       }
     });
