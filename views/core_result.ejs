@@ -74,25 +74,30 @@
                 <table class="table">
                     <thead class="thead-dark" style="background-color: black;">
                       <tr style="color: white">
-                        <th scope="col" style="width: 5%" class="text-center">#</th>
+                        <th scope="col" style="width: 3%" class="text-center">#</th>
                         <% for(let i = 1; i < results[0].combi_list[0].length+1; i++){ %>
                             <th scope="col" class="text-center"><%= i%>번코어</th>
                         <% } %>
                         <th scope="col" style="width: 8%">확인버튼</th>
+                        <th scope="col" style="width: 2%"></th>
                       </tr>
                     </thead>
-                    <tbody>
-                        <% for(let i = 0; i < results[0].combi_list.length; i++){ %>
-                            <th scope="row" class="text-center" valign="middle"><%= i%></th>
-                            <% for(let j = 0; j < results[0].combi_list[i].length; j++){ %>
-                                <td><img style="float:left;padding-right:5px;"src="./tmp/<%= results[0].session_ID%>/skill<%= results[0].combi_list[i][j]%>.png" />
-                                    <div> 메인스킬: <%= results[0].skill_arr_detail[i][j][0]%>번 위치: <%= results[0].combi_list[i][j]%><br>보조스킬: <%= results[0].skill_arr_detail[i][j][1]%>, <%= results[0].skill_arr_detail[i][j][2]%>번</div></td>
+                </table>
+                <div style="width: 100%; height:300px; overflow-y:auto; overflow-x: hidden;">
+                    <table class="table">
+                        <tbody>
+                            <% for(let i = 0; i < results[0].combi_list.length; i++){ %>
+                                <th scope="row" class="text-center" valign="middle"><%= i%></th>
+                                <% for(let j = 0; j < results[0].combi_list[i].length; j++){ %>
+                                    <td><img style="float:left;padding-right:5px;"src="./tmp/<%= results[0].session_ID%>/skill<%= results[0].combi_list[i][j]%>.png" />
+                                        <div> 메인스킬: <%= results[0].skill_arr_detail[i][j][0]%>번 위치: <%= results[0].combi_list[i][j]%><br>보조스킬: <%= results[0].skill_arr_detail[i][j][1]%>, <%= results[0].skill_arr_detail[i][j][2]%>번</div></td>
+                                <% } %>
+                                    <td style="padding: auto; width:8%"><button class="btn btn-primary btn-block" style="font-size:12px;" onclick="check_button('<%= results[0].combi_list[i] %>','<%= results[0].skill_arr_detail[i] %>','<%= results[0].skill_level %>')"><%= i%> : 확인</button></td>
+                                </tr>
                             <% } %>
-                                <td style="padding: auto;"><button class="btn btn-primary btn-block " onclick="check_button('<%= results[0].combi_list[i] %>','<%= results[0].skill_arr_detail[i] %>','<%= results[0].skill_level %>')"><%= i%> : 확인</button></td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                  </table>
+                        </tbody>
+                    </table>
+                </div>
                   
             </div>
         </section>
