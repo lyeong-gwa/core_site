@@ -92,7 +92,7 @@
                                     <td><img style="float:left;padding-right:5px;"src="./tmp/<%= results[0].session_ID%>/skill<%= results[0].combi_list[i][j]%>.png" />
                                         <div> 메인스킬: <%= results[0].skill_arr_detail[i][j][0]%>번 위치: <%= results[0].combi_list[i][j]%><br>보조스킬: <%= results[0].skill_arr_detail[i][j][1]%>, <%= results[0].skill_arr_detail[i][j][2]%>번</div></td>
                                 <% } %>
-                                    <td style="padding: auto; width:8%"><button class="btn btn-primary btn-block" style="font-size:12px;" onclick="check_button('<%= results[0].combi_list[i] %>','<%= results[0].skill_arr_detail[i] %>','<%= results[0].skill_level %>')"><%= i%> : 확인</button></td>
+                                    <td style="padding: auto; width:8%"><button class="btn btn-primary btn-block" style="font-size:12px;" onclick="check_button('<%= i%>','<%= results[0].combi_list[i] %>','<%= results[0].skill_arr_detail[i] %>','<%= results[0].skill_level %>')"><%= i%> : 확인</button></td>
                                 </tr>
                             <% } %>
                         </tbody>

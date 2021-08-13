@@ -48,7 +48,7 @@ function result_table(job){
 	string_job=job.value;
 	skill_list=job_skill(job.value)
 	if(skill_list!=null){
-		insert_table_list='<td style="background-color: black;color: white">결과표</td><td colspan="3" style="background-color: black;color: white">조합 : <span id="result_combi"></span></td><tr></tr>';
+		insert_table_list='<td style="background-color: black;color: white" id="result_id">결과표</td><td colspan="3" style="background-color: black;color: white">조합 : <span id="result_combi"></span></td><tr></tr>';
 		tmp='';
 		for(let i=0;i<skill_list.length;i++){
 			tmp=tmp+`<td class="col-md-1"><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<span id="result_skill_level${i}" style="float:right">0</span></td>`;
@@ -69,8 +69,9 @@ function result_table(job){
 	}
 }
 
-function check_button(combi,detail,skill_level){
+function check_button(i,combi,detail,skill_level){
 	document.getElementById('result_combi').innerHTML=combi;
+	document.getElementById('result_id').innerHTML="결과표 : "+i;
 	detail=detail.split(",").map(Number);
 	skill_level=skill_level.split(",").map(Number);
 	final_result_skill_level=Array.apply(null, new Array(skill_level.length)).map(Number.prototype.valueOf,0);
