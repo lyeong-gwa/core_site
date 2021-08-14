@@ -4,6 +4,7 @@ const path = require('path');
 const router = asyncify(express.Router());
 const multer = require("multer");
 const delete_forder=require("./delete_folder");
+const job_skill=require("./job_skill_name");
 let async = require('async');
 let {PythonShell} = require("python-shell");
 const { appendFile } = require('fs');
@@ -38,7 +39,8 @@ const upload = multer({
 
 // GET / 라우터
 router.get('/', (req, res) => {
-  res.render("core.ejs");
+  const job_skill_class = job_skill.search_job_skill(__dirname+'/../public/maple_img');
+  res.render("core.ejs",{job_skill_class});
 });
 
 router.post('/',upload.array('profile_pt'), async(req, res) => {
@@ -48,7 +50,7 @@ router.post('/',upload.array('profile_pt'), async(req, res) => {
    img_path=``;
    img_mime=``;
    send_data=``;
-
+   const job_skill_class = job_skill.search_job_skill(__dirname+'/../public/maple_img');
    for(let i=0;i<req.files.length;i++){
      let {mimetype,path} = req.files[i];
      
@@ -65,7 +67,7 @@ router.post('/',upload.array('profile_pt'), async(req, res) => {
   
   PythonShell.run(__dirname+'/../maple_python/test.py',options,function(err,results){
     if(err) throw err;
-    res.render("core_result.ejs",{results});
+    res.render("core_result.ejs",{results,job_skill_class});
   });
 
   //delete_forder.deleteFolderRecursive(__dirname+'/../public/tmp/'+req.sessionID);

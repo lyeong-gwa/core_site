@@ -1,7 +1,4 @@
 
-
-
-
 function previewImage(targetObj, View_area,num) {
 	var preview = document.getElementById(View_area); //div id
 	var ua = window.navigator.userAgent;
@@ -98,8 +95,12 @@ function button_checking(targetObj) {
 
 
 function skill_table(job){
+	let JsonData = document.getElementById("job_skill_class").value;
+	let myJsonData = JSON.parse(JsonData);
+
 	string_job=job.options[job.selectedIndex].value;
-	skill_list=job_skill(job.options[job.selectedIndex].value)
+	//skill_list=job_skill(job.options[job.selectedIndex].value);
+	skill_list=myJsonData[string_job];
 	if(skill_list!=null){
 		insert_table_list='';
 		tmp='';
@@ -135,27 +136,6 @@ document.querySelector("#info").addEventListener("submit",bansubmit);
 	}
  }
 
-
-function job_skill(job){
-	let filelist=null;
-	switch(job){
-		case 'adel':
-		filelist=[
-			'00플레인.png',
-			'01샤드,원더.png',
-			'02펀토.png',
-			'03임페일,레조넌스,마커.png',
-			'04크리에이션,게더링.png',
-			'05크로스.png',
-			'06테리토리,트레드.png',
-			'07디바이드.png',
-			'08오더,그레이브.png',
-			'09블로섬,스콜.png'
-		  ]
-		break;
-	}
-	return filelist;
-}
 window.onpageshow=function(event){
 	skill_table(document.querySelector("select[name=job]"));
 }

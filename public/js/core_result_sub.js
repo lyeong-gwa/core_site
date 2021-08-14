@@ -1,7 +1,10 @@
 function skill_table(job,skill_level){
+	let JsonData = document.getElementById("job_skill_class").value;
+	let myJsonData = JSON.parse(JsonData);
+
 	string_job=job.value;
-	skill_list=job_skill(job.value)
-	skill_level=skill_level.value
+	skill_list=myJsonData[job.value];
+	skill_level=skill_level.value;
 	skill_level=skill_level.split(",").map(Number);
 	if(skill_list!=null){
 		insert_table_list='';
@@ -45,8 +48,11 @@ function job_skill(job){
 }
 
 function result_table(job){
+	let JsonData = document.getElementById("job_skill_class").value;
+	let myJsonData = JSON.parse(JsonData);
+
 	string_job=job.value;
-	skill_list=job_skill(job.value)
+	skill_list=myJsonData[job.value];
 	if(skill_list!=null){
 		insert_table_list='<td style="background-color: black;color: white" id="result_id">결과표</td><td colspan="3" style="background-color: black;color: white">조합 : <span id="result_combi"></span></td><tr></tr>';
 		tmp='';

@@ -20,6 +20,8 @@
 
     </head>
     <body >
+        
+        <input type="hidden" id="job_skill_class" value="<%=JSON.stringify(job_skill_class)%>" />
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
@@ -40,6 +42,7 @@
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">코어강화</h1>
                     <p class="lead fw-normal text-white-50 mb-0">코어창 이미지를 업로드하면 자동으로 코어강화 방식을 제안하는 서비스</p>
+                    <!-- <div><%= job_skill_class.adel[0] %></div> -->
                 </div>
             </div>
         </header>
@@ -51,8 +54,7 @@
                     <select class="selectpicker" name='job' onchange="skill_table(this)">
                         <option value="bad">직업선택</option>
                         <option value="adel">아델</option>
-                        <option value="hero">히어로</option>
-                        <option value="blade">듀블</option>
+                        <option value="duble">듀블</option>
                       </select>
                       사용코어칸 수 : 
                       <select class="selectpicker" name='core_num'>
