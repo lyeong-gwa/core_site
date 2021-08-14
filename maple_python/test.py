@@ -23,7 +23,7 @@ class page:
     def __init__(self,page_image):
         self.page_image=page_image
 
-def search_image(base,template_arr,thr=0.9): #pil형 이미지 두개 input base이미지에 template 이미지가 있다면 true
+def search_image(base,template_arr,thr=0.90): #pil형 이미지 두개 input base이미지에 template 이미지가 있다면 true
         imgray = cv2.cvtColor(np.array(base),cv2.COLOR_BGR2GRAY)
         return_value=-1
         for temp in template_arr:
@@ -37,7 +37,16 @@ def search_image(base,template_arr,thr=0.9): #pil형 이미지 두개 input base
         return return_value        
         
 
+def skill_level(base,template_arr): #pil형 이미지 두개 input base이미지에 template 이미지가 있다면 true
+        base_cut=base.crop((10,3,30,13))
+        imgray = cv2.cvtColor(np.array(base_cut),cv2.COLOR_BGR2GRAY)
+        return_value=[]
+        for temp in template_arr:
+            template=cv2.cvtColor(np.array(temp),cv2.COLOR_BGR2GRAY)
+            return_value.append(ssim(imgray,template))
+
         
+        return return_value.index(max(return_value))   
         
         
         
@@ -127,7 +136,7 @@ def skill_classification(job,page_arr): # 'adel', page배열넣기
         #코어레벨 측정하는 공간!
         page_arr[page_count].skill_level=[]
         for skill in page.skill_image:
-            page_arr[page_count].skill_level.append(search_image(skill,level_image)+1)
+            page_arr[page_count].skill_level.append(skill_level(skill,level_image)+1)
         page_count=page_count+1
 
 
@@ -150,12 +159,16 @@ def MakeDF(paged):#중복제외한 강화코어 출력
             count=count+1
     s= df.iloc[:,-3]=df.iloc[:,-3].replace(Series(data=[1,3,4,6,8,10,13,15,19,22,26,30,34,                                              
                                                         39,44,49,55,61,67,74,80,88,95,103,111], index=range(1,26)))
+    #df.to_csv("level.csv")
     df.iloc[:,-3]=df.iloc[:,-2].replace(df.groupby(df.iloc[:,-2]).sum().iloc[:,0])
     df=df.drop(df[df.iloc[:,-2]==-1].index)
     df=change_down_level(df)
+    #df.to_csv("level.csv")
     s= df.iloc[:,-3]=df.iloc[:,-3].replace(Series(data=range(1,26), index=[1,3,4,6,8,10,13,15,19,22,26,30,34,                                              
                                                         39,44,49,55,61,67,74,80,88,95,103,111]))
-    df=df.drop_duplicates(range(paged[0].skill_kinds-1),keep='first')
+    #df.to_csv("level.csv")
+    df=df.drop_duplicates(range(paged[0].skill_kinds+1),keep='first')
+    #df.to_csv("level_after.csv")
     df=df.reset_index()
     df=df.drop("index", axis=1)
     
@@ -169,7 +182,11 @@ def change_down_level(df):
     for i in tmp:
         for j in count_arr:
             if min(i,j)==i and i!=j:
-                continue
+                if i==j:
+                    tmpp.append(j)
+                    break
+                else:
+                    continue
             else :
                 tmpp.append(j)
                 break
@@ -300,7 +317,7 @@ for tmp_page in page_info:
 df_tmp=df.iloc[:,-3:-1].drop_duplicates()
 for i,j in zip(df_tmp.iloc[:,-1].values,df_tmp.iloc[:,-2].values):
     skill_level[i]=j
-
+#df.to_csv("level.csv")
 send_json=OrderedDict()
 send_json['job']=input_dict['job']
 send_json['combi_list']=combi_list
