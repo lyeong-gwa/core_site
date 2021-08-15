@@ -63,7 +63,6 @@ def Matching(base_page,target_image='zero_target.png',thr=0.9): #페이지 1차�
         
         res=cv2.matchTemplate(imgray,template,cv2.TM_CCOEFF_NORMED)
         loc = np.where(res>=thr)
-
         base= cv2.cvtColor(np.array(i_base.page_image),cv2.COLOR_RGB2BGR)
         base= cv2.cvtColor(np.array(base),cv2.COLOR_RGB2BGR)
         for pt in zip(*loc[::-1]):
@@ -71,13 +70,14 @@ def Matching(base_page,target_image='zero_target.png',thr=0.9): #페이지 1차�
             cv2.putText(base, str(font_count), pt, cv2.FONT_HERSHEY_DUPLEX, 0.8,(155,0,0), 2, cv2.LINE_AA)
             font_count=font_count+1
         
-        x_min=min(loc[::-1][0])
-        x_max=max(loc[::-1][0])
-        y_min=min(loc[::-1][1])
-        y_max=max(loc[::-1][1])
-
-
-        i_base.user_page_image=Image.fromarray(base[y_min-30:y_max+90,x_min-50:x_max+75])
+        if len(loc[::-1][0])>0:
+            x_min=min(loc[::-1][0])
+            x_max=max(loc[::-1][0])
+            y_min=min(loc[::-1][1])
+            y_max=max(loc[::-1][1])
+            i_base.user_page_image=Image.fromarray(base[y_min-30:y_max+90,x_min-50:x_max+75])
+        else:             
+            i_base.user_page_image=Image.fromarray(base)
         #cv2.imwrite('result_image/result{}.png'.format(count), base)
         base_page[count].x=loc[1]
         base_page[count].y=loc[0]
