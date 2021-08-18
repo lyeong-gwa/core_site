@@ -106,7 +106,7 @@ function skill_table(job){
 		tmp='';
 		for(let i=0;i<skill_list.length;i++){
 			tmp=tmp+`<td class="col-md-1"><input type="checkbox" id="check_skill_${i}" name="skill_box" value="${i}"/><label for="check_skill_${i}"><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(0,2)}:${skill_list[i].slice(2,skill_list[i].length-4)}</label></td>`;
-			if(i%4==3){
+			if(i%3==2){
 				insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
 				tmp='';
 			}

@@ -11,7 +11,7 @@ function skill_table(job,skill_level){
 		tmp='';
 		for(let i=0;i<skill_list.length;i++){
 			tmp=tmp+`<td class="col-md-1"><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(0,2)}:${skill_list[i].slice(2,skill_list[i].length-4)}<span style="float:right;padding-right:10px;">예상레벨:${skill_level[i]}</span></td>`;
-			if(i%4==3){
+			if(i%3==2){
 				insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
 				tmp='';
 			}
@@ -58,7 +58,7 @@ function result_table(job){
 		tmp='';
 		for(let i=0;i<skill_list.length;i++){
 			tmp=tmp+`<td class="col-md-1"><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<span id="result_skill_level${i}" style="float:right">0</span></td>`;
-			if(i%4==3){
+			if(i%3==2){
 				insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
 				tmp='';
 			}
