@@ -37,16 +37,20 @@ def search_image(base,template_arr,thr=0.90): #pil형 이미지 두개 input bas
         return return_value        
         
 
-def skill_level(base,template_arr): #pil형 이미지 두개 input base이미지에 template 이미지가 있다면 true
+def skill_level(base,template_arr,skill_check=False): #pil형 이미지 두개 input base이미지에 template 이미지가 있다면 true
+    if skill_check==False:
+        base_cut=base
+    else:
         base_cut=base.crop((10,3,30,13))
-        imgray = cv2.cvtColor(np.array(base_cut),cv2.COLOR_BGR2GRAY)
-        return_value=[]
-        for temp in template_arr:
-            template=cv2.cvtColor(np.array(temp),cv2.COLOR_BGR2GRAY)
-            return_value.append(ssim(imgray,template))
+    imgray = cv2.cvtColor(np.array(base_cut),cv2.COLOR_BGR2GRAY)
+    return_value=[]
+    for temp in template_arr:
+        template=cv2.cvtColor(np.array(temp),cv2.COLOR_BGR2GRAY)
+        return_value.append(round(ssim(imgray,template),5))
 
-        
-        return return_value.index(max(return_value))   
+    if max(return_value) <0.85 :
+        return -1
+    return return_value.index(max(return_value))   
         
         
         
@@ -128,15 +132,18 @@ def skill_classification(job,page_arr): # 'adel', page배열넣기
         page_arr[page_count].skill_arr=[]
         for skill in page.skill_image:
             tmp=[]
-            tmp.append(search_image(skill,left_image))
-            tmp.append(search_image(skill,top_image))
-            tmp.append(search_image(skill,right_image))
+            tmp_left=skill.crop((6,31,20,45))
+            tmp_top=skill.crop((13,17,27,26))
+            tmp_right=skill.crop((21,31,34,45))
+            tmp.append(skill_level(tmp_left,left_image))
+            tmp.append(skill_level(tmp_top,top_image))
+            tmp.append(skill_level(tmp_right,right_image))
             page_arr[page_count].skill_arr.append(tmp)
         
         #코어레벨 측정하는 공간!
         page_arr[page_count].skill_level=[]
         for skill in page.skill_image:
-            page_arr[page_count].skill_level.append(skill_level(skill,level_image)+1)
+            page_arr[page_count].skill_level.append(skill_level(skill,level_image,True)+1)
         page_count=page_count+1
 
 
