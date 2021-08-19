@@ -27,7 +27,7 @@ const upload = multer({
       cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-      cb(null, new Date().valueOf()+file.originalname);
+      cb(null, new Date().valueOf()+file.originalname.charCodeAt(0).toString(16));
     }
   }),
   fileFilter: fileFilter
