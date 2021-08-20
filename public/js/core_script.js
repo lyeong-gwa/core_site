@@ -127,11 +127,16 @@ document.querySelector("#info").addEventListener("submit",bansubmit);
  function bansubmit(A){
 	let chkList = document.querySelectorAll("input[name=skill_box]:checked");
 	let chkprofile = document.querySelector("input[name=profile_pt]").value;
+	let chkprofile_count_limit=document.querySelector("input[name=profile_pt]").files.length;
 	if(chkList.length<1){
 		alert("강화스킬를 선택해주세요!");
 		A.preventDefault();
 	}else if(chkprofile==''){
 		alert("코어창 상태이미지를 업로드해주세요!");
+		A.preventDefault();
+	}
+	if(chkprofile_count_limit>20){
+		alert("이미지파일은 최대 20개로 제한합니다");
 		A.preventDefault();
 	}
  }
