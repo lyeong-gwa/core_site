@@ -139,16 +139,59 @@ document.querySelector("#info").addEventListener("submit",bansubmit);
 function classification_job_f(choice_class){
 	string_class=choice_class.options[choice_class.selectedIndex].value;
 	let sub_class={
-		adventurer:'<option value="Double">듀블</option>',
-		cygnus:'',
-		resistance:'',
-		daemon:'',
-		hero:'',
-		nova:'',
-		Lev:'',
-		anima:'',
-		zero:'',
-		kinesis:'',
+		adventurer:`<option value="Hero">히어로</option>
+		<option value="Paladin">팔라딘</option>
+		<option value="Dark_Knight">다크나이트</option>
+		<option value="Bulldog">불독</option>
+		<option value="Sun_call">썬콜</option>
+		<option value="Bishop">비숍</option>
+		<option value="Bow_master">보우마스터</option>
+		<option value="Jingu_Shrine">신궁</option>
+		<option value="Pathfinder">패스파인더</option>
+		<option value="Night_Rod">나이트로드</option>
+		<option value="Shadow">섀도어</option>
+		<option value="Dual_blade">듀얼블레이드</option>
+		<option value="Viper">바이퍼</option>
+		<option value="Captain">캡틴</option>
+		<option value="Cannon_shooter">캐논슈터</option>
+		`,
+		cygnus:`<option value="Soul_Master">소울마스터</option>
+		<option value="Mikhail">미하일</option>
+		<option value="Flame_Wizard">플레임위자드</option>
+		<option value="Windbreaker">윈드브레이커</option>
+		<option value="Night_walker">나이트워커</option>
+		<option value="Striker">스트라이커</option>
+		`,
+		resistance:`<option value="Blaster">블래스터</option>
+		<option value="Battle_mage">배틀메이지</option>
+		<option value="Wild_hunter">와일드헌터</option>
+		<option value="Mechanic">메카닉</option>
+		<option value="Xenon">제논</option>
+		`,
+		daemon:`<option value="Demon_Slayer">데몬슬레이어</option>
+		<option value="Demon_Avenger">데몬어벤져</option>
+		`,
+		hero:`<option value="Aran">아란</option>
+		<option value="Evan">에반</option>
+		<option value="Luminous">루미너스</option>
+		<option value="Mercedes">메르세데스</option>
+		<option value="Phantom">팬텀</option>
+		<option value="Eun_Wol">은월</option>
+		`,
+		nova:`<option value="Kaiser">카이저</option>
+		<option value="Cain">카인</option>
+		<option value="Cadena">카데나</option>
+		<option value="Angelic_buster">엔젤릭버스터</option>
+		`,
+		Lev:`<option value="Adele">아델</option>
+		<option value="Illium">일리움</option>
+		<option value="Arc">아크</option>
+		`,
+		anima:`<option value="Lala">라라</option>
+		<option value="Hoyoung">호영</option>
+		`,
+		zero:`<option value="Zero">제로</option>`,
+		kinesis:`<option value="Kinesis">키네시스</option>`,
 	};
 	switch(string_class){
 		case 'adventurer':
@@ -185,6 +228,7 @@ function classification_job_f(choice_class){
 			document.querySelector('select[name="job"]').innerHTML=``
 			break;
 	}
+	skill_table(document.querySelector("select[name=job]"));
 }
 
 
