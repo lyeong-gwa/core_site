@@ -136,6 +136,58 @@ document.querySelector("#info").addEventListener("submit",bansubmit);
 	}
  }
 
+function classification_job_f(choice_class){
+	string_class=choice_class.options[choice_class.selectedIndex].value;
+	let sub_class={
+		adventurer:'<option value="Double">듀블</option>',
+		cygnus:'',
+		resistance:'',
+		daemon:'',
+		hero:'',
+		nova:'',
+		Lev:'',
+		anima:'',
+		zero:'',
+		kinesis:'',
+	};
+	switch(string_class){
+		case 'adventurer':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.adventurer}`
+			break;
+		case 'cygnus':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.cygnus}`
+			break;
+		case 'resistance':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.resistance}`
+			break;
+		case 'daemon':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.daemon}`
+			break;
+		case 'hero':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.hero}`
+			break;
+		case 'nova':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.nova}`
+			break;
+		case 'Lev':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.Lev}`
+			break;
+		case 'anima':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.anima}`
+			break;
+		case 'zero':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.zero}`
+			break;
+		case 'kinesis':
+			document.querySelector('select[name="job"]').innerHTML=`<option value="bad">직업선택</option>${sub_class.kinesis}`
+			break;
+		default:
+			document.querySelector('select[name="job"]').innerHTML=``
+			break;
+	}
+}
+
+
 window.onpageshow=function(event){
 	skill_table(document.querySelector("select[name=job]"));
 }

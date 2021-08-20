@@ -50,23 +50,23 @@
         <section class="py-5">
             <div class="container">
                 <form method="post" id="info" enctype="multipart/form-data">
+                    분류 : 
+                    <select class="selectpicker" name='classification_job' onchange="classification_job_f(this)">
+                        <option value="bad"></option>>
+                        <option value="adventurer">모험가</option>
+                        <option value="cygnus">시그너스기사단</option>
+                        <option value="resistance">레지스탕스</option>
+                        <option value="daemon">데몬</option>
+                        <option value="hero">영웅</option>
+                        <option value="nova">노바</option>
+                        <option value="Lev">레프</option>
+                        <option value="anima">아니마</option>
+                        <option value="zero">제로</option>
+                        <option value="kinesis">키네시스</option>
+                      </select>
                     직업 : 
                     <select class="selectpicker" name='job' onchange="skill_table(this)">
                         <option value="bad">직업선택</option>
-                        <option value="Adele">아델</option>
-                        <option value="Aran">아란</option>
-                        <option value="Arc">아크</option>
-                        <option value="Cadena">카데나</option>
-                        <option value="DemonAvenger">데몬어벤저</option>
-                        <option value="Double">듀블</option>
-                        <option value="Hero">히어로</option>
-                        <option value="Messe">메세</option>
-                        <option value="Pepa">패파</option>
-                        <option value="Soma">소마</option>
-                        <option value="Suncall">썬콜</option>
-                        <option value="Waheon">와헌</option>
-                        <option value="Winve">윈브</option>
-                        <option value="par">팔라딘</option>
                       </select>
                       사용코어칸 수 : 
                       <select class="selectpicker" name='core_num'>
