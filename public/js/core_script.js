@@ -135,8 +135,8 @@ document.querySelector("#info").addEventListener("submit",bansubmit);
 		alert("코어창 상태이미지를 업로드해주세요!");
 		A.preventDefault();
 	}
-	if(chkprofile_count_limit>20){
-		alert("이미지파일은 최대 20개로 제한합니다");
+	if(chkprofile_count_limit>15){
+		alert("이미지파일은 최대 15개로 제한합니다");
 		A.preventDefault();
 	}
  }
