@@ -288,9 +288,10 @@ input_img=[]
 for i in file_name:
     input_img.append(page(Image.open(i)))
 job=input_dict['job']
+nesting=input_dict['nesting']
 digit=input_dict['core_num']
 essential_skill=input_dict['skill_box']
-nesting=input_dict['nesting']
+
 
 os.chdir("./maple_python")
 
@@ -338,4 +339,8 @@ send_json['session_ID']=input_ID
 send_json['result_img_path']=result_img_path
 send_final=json.dumps(send_json, ensure_ascii=False, cls= NumpyEncoder)
 #shutil.rmtree(r"public/tmp/"+input_ID)
+fdd=open("result_log.txt","a")
+fdd.write('{} {} {} {}\n'.format(job,nesting,digit,essential_skill))
+fdd.close()
+
 print(send_final)
