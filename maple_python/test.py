@@ -240,13 +240,15 @@ def Make_combi(only_2co,only_3co):
     core_2=Make_combination(only_2co,digit-len(core_3[0]))
     return core_2,core_3
 
-def Make_best_combi(combi,df,essential_skill):
+def Make_best_combi(combi,df,essential_skill,nesting):
     max_score=0
     best_list=[]
+
     for comb in combi:
         table=df[df.iloc[:,-1].isin(comb)]
         score_arr=table.iloc[:,essential_skill].sum(axis=0)
-        score_arr[score_arr[score_arr>2].index]=2
+        score_arr[score_arr[score_arr>int(nesting)].index]=int(nesting)
+
         score=score_arr.sum()
         if max_score<score:
             max_score=score
@@ -254,17 +256,18 @@ def Make_best_combi(combi,df,essential_skill):
             best_list.append(comb)
         elif max_score==score:
             best_list.append(comb)
+
     return best_list
 
 
-def return_core_combi(input_img,job,digit,essential_skill):
+def return_core_combi(input_img,job,digit,essential_skill,nesting):
     paged= Skill_cutting(Matching(input_img))
     skill_classification(job,paged)
     df = MakeDF(paged)
     only_2co,only_3co=Filter_df(df,essential_skill)
     core_2,core_3 = Make_combi(only_2co,only_3co)
     combi=trans_combi_list(core_3,core_2)
-    best_list=Make_best_combi(combi,df,essential_skill)
+    best_list=Make_best_combi(combi,df,essential_skill,nesting)
     return best_list,paged,df
 
 def createDirectory(directory): 
@@ -287,10 +290,11 @@ for i in file_name:
 job=input_dict['job']
 digit=input_dict['core_num']
 essential_skill=input_dict['skill_box']
+nesting=input_dict['nesting']
 
 os.chdir("./maple_python")
 
-combi_list,page_info,df=return_core_combi(input_img,"job/"+job,digit,essential_skill)
+combi_list,page_info,df=return_core_combi(input_img,"job/"+job,digit,essential_skill,nesting)
 
 skill_arr=[]#스킬조합 [2,3,4] json에 넣을 데이터 아님
 for i in page_info:
