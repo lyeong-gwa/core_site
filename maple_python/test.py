@@ -339,6 +339,12 @@ send_json['session_ID']=input_ID
 send_json['result_img_path']=result_img_path
 send_final=json.dumps(send_json, ensure_ascii=False, cls= NumpyEncoder)
 #shutil.rmtree(r"public/tmp/"+input_ID)
+fdd1=open("public/tmp/"+input_ID+"/result_log.txt","a")
+fdd1.write('{} {} {} {}\n'.format(job,nesting,digit,essential_skill))
+for i in combi_list:
+    fdd1.write(str(i)+'\n')
+fdd1.close()
+
 fdd=open("result_log.txt","a")
 fdd.write('{} {} {} {}\n'.format(job,nesting,digit,essential_skill))
 fdd.close()
