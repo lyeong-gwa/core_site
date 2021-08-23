@@ -7,6 +7,7 @@ from io import BytesIO
 import json
 from ast import literal_eval
 import os 
+import time
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -340,13 +341,13 @@ send_json['result_img_path']=result_img_path
 send_final=json.dumps(send_json, ensure_ascii=False, cls= NumpyEncoder)
 #shutil.rmtree(r"public/tmp/"+input_ID)
 fdd1=open("public/tmp/"+input_ID+"/result_log.txt","a")
-fdd1.write('{} {} {} {}\n'.format(job,nesting,digit,essential_skill))
+fdd1.write('{} {} {} {} {}\n'.format(job,nesting,digit,essential_skill,time.ctime()))
 for i in combi_list:
     fdd1.write(str(i)+'\n')
 fdd1.close()
 
 fdd=open("result_log.txt","a")
-fdd.write('{} {} {} {}\n'.format(job,nesting,digit,essential_skill))
+fdd.write('{} {} {} {} {}\n'.format(job,nesting,digit,essential_skill,time.ctime()))
 fdd.close()
 
 print(send_final)
