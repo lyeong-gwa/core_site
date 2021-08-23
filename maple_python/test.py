@@ -149,7 +149,7 @@ def skill_classification(job,page_arr): # 'adel', page배열넣기
 
 
 
-def MakeDF(paged):#중복제외한 강화코어 출력
+def MakeDF(paged,essential_skill):#중복제외한 강화코어 출력
     df = pd.DataFrame(columns=range(paged[0].skill_kinds+3))
     count=0
     for page in paged:
@@ -176,6 +176,9 @@ def MakeDF(paged):#중복제외한 강화코어 출력
                                                         39,44,49,55,61,67,74,80,88,95,103,111]))
     #df.to_csv("level.csv")
     df=df.drop_duplicates(range(paged[0].skill_kinds+1),keep='first')
+    tmp_essential_skill=essential_skill
+    tmp_essential_skill.append(df.shape[1]-2)
+    df=df.drop_duplicates(tmp_essential_skill,keep='first')
     #df.to_csv("level_after.csv")
     df=df.reset_index()
     df=df.drop("index", axis=1)
@@ -264,7 +267,7 @@ def Make_best_combi(combi,df,essential_skill,nesting):
 def return_core_combi(input_img,job,digit,essential_skill,nesting):
     paged= Skill_cutting(Matching(input_img))
     skill_classification(job,paged)
-    df = MakeDF(paged)
+    df = MakeDF(paged,essential_skill)
     only_2co,only_3co=Filter_df(df,essential_skill)
     core_2,core_3 = Make_combi(only_2co,only_3co)
     combi=trans_combi_list(core_3,core_2)
