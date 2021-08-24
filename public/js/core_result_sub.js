@@ -1,3 +1,13 @@
+combi_set=document.querySelector("input[name=combi_set]").value.split(",")
+combi_size=document.querySelector("input[name=combi_size]").value
+combi_arr=[]
+for(let i=0;i<combi_set.length;i=i+parseInt(combi_size)){
+	tmp_arr=[]
+	for(let j=0;j<combi_size;j++){
+		tmp_arr.push(combi_set[i+j])
+	}
+	combi_arr.push(tmp_arr)
+}
 function skill_table(job,skill_level){
 	let JsonData = document.getElementById("job_skill_class").value;
 	let myJsonData = JSON.parse(JsonData);
@@ -75,6 +85,34 @@ function result_table(job){
 	}
 }
 
+function filter_table(job){
+	let JsonData = document.getElementById("job_skill_class").value;
+	let myJsonData = JSON.parse(JsonData);
+
+	string_job=job.value;
+	skill_list=myJsonData[job.value];
+	if(skill_list!=null){
+		insert_table_list='<td style="background-color: black;color: white" id="result_id">필터창</td><td colspan="3" style="background-color: black;color: white"><span id="result_combi"></span></td><tr></tr>';
+		tmp='';
+		for(let i=0;i<skill_list.length;i++){
+			tmp=tmp+`<td class="col-md-1"><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<span id="result_skill_level${i}" style="float:right">0</span></td>`;
+			if(i%2==1){
+				insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
+				tmp='';
+			}
+		}
+		if(skill_list.length%2!=0){
+			insert_table_list=insert_table_list+"<tr>"+tmp+"<td></td></tr>";
+			tmp='';
+		}
+		insert_table_list=insert_table_list+"<tr>"+'<td></td><td class="col-md-1"><button class="btn btn-primary btn-block">필터시작!</button></td>'+"</tr>";
+		document.querySelector('filter_table').innerHTML=`<table class="table table-striped">${insert_table_list}</table>`;
+	}
+	else{
+		document.querySelector('filter_table').innerHTML='';
+	}
+}
+
 function check_button(i,combi,detail,skill_level){
 	document.getElementById('result_combi').innerHTML=combi;
 	document.getElementById('result_id').innerHTML="결과표 : "+i;
@@ -99,7 +137,8 @@ function check_button(i,combi,detail,skill_level){
 }
 
 window.onpageshow=function(event){
-	console.log(document.querySelector("input[name=combi_set]"));
+	document.querySelector("combi_label").innerHTML=`<h3>발견된 총 조합 : ${combi_arr.length}개</h3>`;
 	skill_table(document.querySelector("input[name=job]"),document.querySelector("input[name=skill_level]"));
 	result_table(document.querySelector("input[name=job]"));
+	filter_table(document.querySelector("input[name=job]"));
 }
