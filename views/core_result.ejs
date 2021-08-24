@@ -67,8 +67,16 @@
                 <h3>스킬표</h3>
                 <input type="hidden" name="job" value="<%= results[0].job %>">
                 <input type="hidden" name="skill_level" value=<%= results[0].skill_level %>>
+                <input type="hidden" name="combi_set" value=<%= results[0].combi_list %>>
+                <input type="hidden" name="combi_size" value=<%= results[0].combi_list[0].length %>>
+                <input type="hidden" name="combi_set_size" value=0>
                 <skill_check></skill_check>
+<<<<<<< HEAD
                 <filter_table></filter_table>
+=======
+                
+                <combi_label></combi_label>
+>>>>>>> d19f7575d753a98f5cdaff77ce36a9d012ddc37f
                 <result_table></result_table>
                 <br>
                 <table class="table">
