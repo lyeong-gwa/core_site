@@ -176,8 +176,7 @@ def MakeDF(paged,essential_skill):#중복제외한 강화코어 출력
                                                         39,44,49,55,61,67,74,80,88,95,103,111]))
     #df.to_csv("level.csv")
     df=df.drop_duplicates(range(paged[0].skill_kinds+1),keep='first')
-    tmp_essential_skill=essential_skill
-    tmp_essential_skill.append(df.shape[1]-2)
+    tmp_essential_skill=essential_skill+[df.shape[1]-2]
     df=df.drop_duplicates(tmp_essential_skill,keep='first')
     #df.to_csv("level_after.csv")
     df=df.reset_index()
