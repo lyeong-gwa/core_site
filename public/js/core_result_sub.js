@@ -99,6 +99,7 @@ function check_button(i,combi,detail,skill_level){
 }
 
 window.onpageshow=function(event){
+	console.log(document.querySelector("input[name=combi_set]"));
 	skill_table(document.querySelector("input[name=job]"),document.querySelector("input[name=skill_level]"));
 	result_table(document.querySelector("input[name=job]"));
 }

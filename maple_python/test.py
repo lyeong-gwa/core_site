@@ -271,7 +271,7 @@ def return_core_combi(input_img,job,digit,essential_skill,nesting):
     only_2co,only_3co=Filter_df(df,essential_skill)
     core_2,core_3 = Make_combi(only_2co,only_3co)
     combi=trans_combi_list(core_3,core_2)
-    best_list=Make_best_combi(combi,df,essential_skill,nesting)
+    best_list=combi#Make_best_combi(combi,df,essential_skill,nesting)
     return best_list,paged,df
 
 def createDirectory(directory): 
