@@ -36,26 +36,6 @@ function skill_table(job,skill_level){
 		document.querySelector('skill_check').innerHTML='';
 	}
 }
-function job_skill(job){
-	let filelist=null;
-	switch(job){
-		case 'adel':
-		filelist=[
-			'00플레인.png',
-			'01샤드,원더.png',
-			'02펀토.png',
-			'03임페일,레조넌스,마커.png',
-			'04크리에이션,게더링.png',
-			'05크로스.png',
-			'06테리토리,트레드.png',
-			'07디바이드.png',
-			'08오더,그레이브.png',
-			'09블로섬,스콜.png'
-		  ]
-		break;
-	}
-	return filelist;
-}
 
 function result_table(job){
 	let JsonData = document.getElementById("job_skill_class").value;
@@ -88,14 +68,20 @@ function result_table(job){
 function filter_table(job){
 	let JsonData = document.getElementById("job_skill_class").value;
 	let myJsonData = JSON.parse(JsonData);
-
+	let option_form_min=`<select class="selectpicker" name='min_limit' onchange='min_max_limit_change(0)'><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>`;
+	let option_form_max=`<select class="selectpicker" name='max_limit'onchange='min_max_limit_change(1)'><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>`;
+	let option_form_level=`<select class="selectpicker" name='level_limit'>`;
+	for(let i=1;i<51;i++){
+		option_form_level=option_form_level+`<option>${i}</option>`
+	}
+	option_form_level=option_form_level+`</select>`
 	string_job=job.value;
 	skill_list=myJsonData[job.value];
 	if(skill_list!=null){
-		insert_table_list='<td style="background-color: black;color: white" id="result_id">필터창</td><td colspan="3" style="background-color: black;color: white"><span id="result_combi"></span></td><tr></tr>';
+		insert_table_list='<td style="background-color: black;color: white">필터창</td><td colspan="3" style="background-color: black;color: white"><span></span></td><tr></tr>';
 		tmp='';
 		for(let i=0;i<skill_list.length;i++){
-			tmp=tmp+`<td class="col-md-1"><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<span id="result_skill_level${i}" style="float:right">0</span></td>`;
+			tmp=tmp+`<td class="col-md-1"><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<span style="float:right">${option_form_min}~${option_form_max}중첩, ${option_form_level}레벨 이상</span></td>`;
 			if(i%2==1){
 				insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
 				tmp='';
@@ -111,6 +97,11 @@ function filter_table(job){
 	else{
 		document.querySelector('filter_table').innerHTML='';
 	}
+	max_limit=document.getElementsByName('max_limit');
+	for(let i=0;i<max_limit.length;i++){
+		max_limit[i].value=6;
+	}
+	//console.log(document.getElementsByName('min_limit').length);
 }
 
 function check_button(i,combi,detail,skill_level){
@@ -132,13 +123,31 @@ function check_button(i,combi,detail,skill_level){
 
 	for(let i=0;i<final_result_skill_level.length;i++){
 		document.getElementById("result_skill_level"+i).innerHTML= final_result_skill_level[i];
-	}	
-	
+	}		
 }
+
+function min_max_limit_change(check){
+	min_limit=document.getElementsByName('min_limit');
+	max_limit=document.getElementsByName('max_limit');
+	for(let i=0;i<min_limit.length;i++){
+		if(max_limit[i].value<min_limit[i].value){
+			if(check==0){
+				max_limit[i].value=min_limit[i].value;
+			}
+			else{
+				min_limit[i].value=max_limit[i].value;
+			}
+		}
+		//console.log(min_limit[i].value);
+		//console.log(max_limit[i].value);
+	}
+}
+
 
 window.onpageshow=function(event){
 	document.querySelector("combi_label").innerHTML=`<h3>발견된 총 조합 : ${combi_arr.length}개</h3>`;
-	document.querySelector("combi_label").innerHTML=`발견된 총 조합 : ${combi_arr.length}개`;
+	document.getElementById("info_100").innerText=`최대 100가지 조합을 보여줍니다 ▼  찾아낸 조합 : ${combi_arr.length} | 필터 후 남은 조합 : ${combi_arr.length}`;
+
 	skill_table(document.querySelector("input[name=job]"),document.querySelector("input[name=skill_level]"));
 	result_table(document.querySelector("input[name=job]"));
 	filter_table(document.querySelector("input[name=job]"));
