@@ -1,3 +1,13 @@
+combi_set=document.querySelector("input[name=combi_set]").value.split(",")
+combi_size=document.querySelector("input[name=combi_size]").value
+combi_arr=[]
+for(let i=0;i<combi_set.length;i=i+parseInt(combi_size)){
+	tmp_arr=[]
+	for(let j=0;j<combi_size;j++){
+		tmp_arr.push(combi_set[i+j])
+	}
+	combi_arr.push(tmp_arr)
+}
 function skill_table(job,skill_level){
 	let JsonData = document.getElementById("job_skill_class").value;
 	let myJsonData = JSON.parse(JsonData);
@@ -99,7 +109,7 @@ function check_button(i,combi,detail,skill_level){
 }
 
 window.onpageshow=function(event){
-	console.log(document.querySelector("input[name=combi_set]"));
+	document.querySelector("combi_label").innerHTML=`발견된 총 조합 : ${combi_arr.length}개`;
 	skill_table(document.querySelector("input[name=job]"),document.querySelector("input[name=skill_level]"));
 	result_table(document.querySelector("input[name=job]"));
 }
