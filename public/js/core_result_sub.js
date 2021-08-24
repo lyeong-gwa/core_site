@@ -137,11 +137,8 @@ function check_button(i,combi,detail,skill_level){
 }
 
 window.onpageshow=function(event){
-<<<<<<< HEAD
 	document.querySelector("combi_label").innerHTML=`<h3>발견된 총 조합 : ${combi_arr.length}개</h3>`;
-=======
 	document.querySelector("combi_label").innerHTML=`발견된 총 조합 : ${combi_arr.length}개`;
->>>>>>> d19f7575d753a98f5cdaff77ce36a9d012ddc37f
 	skill_table(document.querySelector("input[name=job]"),document.querySelector("input[name=skill_level]"));
 	result_table(document.querySelector("input[name=job]"));
 	filter_table(document.querySelector("input[name=job]"));
