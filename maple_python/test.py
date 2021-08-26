@@ -270,7 +270,7 @@ def return_core_combi(input_img,job,digit,essential_skill,nesting):
     only_2co,only_3co=Filter_df(df,essential_skill)
     core_2,core_3 = Make_combi(only_2co,only_3co)
     combi=trans_combi_list(core_3,core_2)
-    best_list=combi#Make_best_combi(combi,df,essential_skill,nesting)
+    best_list=combi#Make_best_combi(combi,df,essential_skill,nesting) #combi
     return best_list,paged,df
 
 def createDirectory(directory): 
@@ -340,6 +340,7 @@ send_json['skill_arr_detail']=skill_arr_detail
 send_json['skill_level']=skill_level
 send_json['session_ID']=input_ID
 send_json['result_img_path']=result_img_path
+send_json['essential_skill']=essential_skill
 send_final=json.dumps(send_json, ensure_ascii=False, cls= NumpyEncoder)
 #shutil.rmtree(r"public/tmp/"+input_ID)
 fdd1=open("public/tmp/"+input_ID+"/result_log.txt","a")

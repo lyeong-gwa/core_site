@@ -125,6 +125,7 @@ function skill_table(job){
 document.querySelector("#info").addEventListener("submit",bansubmit);
 
  function bansubmit(A){
+	 
 	let chkList = document.querySelectorAll("input[name=skill_box]:checked");
 	let chkprofile = document.querySelector("input[name=profile_pt]").value;
 	let chkprofile_count_limit=document.querySelector("input[name=profile_pt]").files.length;
@@ -235,7 +236,6 @@ function classification_job_f(choice_class){
 	}
 	skill_table(document.querySelector("select[name=job]"));
 }
-
 
 window.onpageshow=function(event){
 	skill_table(document.querySelector("select[name=job]"));
