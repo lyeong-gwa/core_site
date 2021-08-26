@@ -95,10 +95,13 @@ function filter_table(job){
 	let option_form_min=`<select class="selectpicker" name='min_limit' onchange='min_max_limit_change(0)'><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>`;
 	let option_form_max=`<select class="selectpicker" name='max_limit'onchange='min_max_limit_change(1)'><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>`;
 	let option_form_level=`<select class="selectpicker" name='level_limit'>`;
+	let all_level=`<select class="selectpicker" name='all_level' onchange="es_min_max(3)">`;
 	for(let i=0;i<51;i++){
-		option_form_level=option_form_level+`<option>${i}</option>`
+		option_form_level=option_form_level+`<option>${i}</option>`;
+		all_level=all_level+`<option>${i}</option>`;
 	}
-	option_form_level=option_form_level+`</select>`
+	option_form_level=option_form_level+`</select>`;
+	all_level=all_level+`</select>`;
 	string_job=job.value;
 	skill_list=myJsonData[job.value];
 	if(skill_list!=null){
@@ -109,7 +112,7 @@ function filter_table(job){
 			if(essential_skill.indexOf(i+'')!=-1){
 				color_td='style="background-color: rgb(255, 255, 128);"';
 			}
-			tmp=tmp+`<td class="col-md-1" ${color_td}><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<span style="float:right">${option_form_min}~${option_form_max}중첩, ${option_form_level}레벨 이상</span></td>`;
+			tmp=tmp+`<td class="col-md-1" ${color_td}><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<br><span style="float:right">${option_form_min}~${option_form_max}중첩, ${option_form_level}레벨 이상</span></td>`;
 			if(i%2==1){
 				insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
 				tmp='';
@@ -119,7 +122,9 @@ function filter_table(job){
 			insert_table_list=insert_table_list+"<tr>"+tmp+"<td></td></tr>";
 			tmp='';
 		}
-		insert_table_list=insert_table_list+"<tr>"+'<td><center><button class="btn btn-primary btn-block" onclick="filter_starting(0)">전체 조합에 대한 필터 시작하기!</button></center></td><td class="col-md-1"><center><button class="btn btn-primary btn-block" onclick="filter_starting(1)">필터된 조합들에 대한 필터 시작하기!</button></center></td>'+"</tr>";
+		insert_table_list=insert_table_list+`<tr><td></td><td style="float:right; background-color: black;color: white">필수스킬 전체 적용 : <select class="selectpicker" name='all_min' onchange="es_min_max(0)"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>~<select class="selectpicker" name='all_max' onchange="es_min_max(1)"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>중첩,${all_level}레벨 이상</td></tr>`;
+		tmp='';
+		insert_table_list=insert_table_list+"<tr>"+'<td><center><button id="left_button" class="btn btn-primary btn-block" onclick="filter_starting(0)">전체 조합에 대한 필터 시작하기!</button></center></td><td class="col-md-1"><center><button id="right_button"class="btn btn-primary btn-block" onclick="filter_starting(1)">필터된 조합들에 대한 필터 시작하기!</button></center></td>'+"</tr>";
 		document.querySelector('filter_table').innerHTML=`<table class="table table-striped">${insert_table_list}</table>`;
 	}
 	else{
@@ -189,7 +194,7 @@ function init_info(){
 	nesting_arr=log_nesting_arr;
 }
 
-function seting_filter(){
+function setting_filter(){
 	let tmp_html='<div style="width: 100%; height:300px; overflow-y:auto; overflow-x: hidden;"><table class="table">';
 	for(let i = 0; i < filter_index_list.length; i++){
 		tmp_html=tmp_html+`<tr>`;
@@ -210,12 +215,12 @@ function seting_filter(){
 }
 
 function filter_starting(check){
-	console.log("시작됨");
 	let min_limit=document.getElementsByName('min_limit');
 	let max_limit=document.getElementsByName('max_limit');
 	let level_limit=document.getElementsByName('level_limit');
 	let target_index=[];
 	let new_filter_index_list=[];
+
 	if(check==0){
 		target_index=all_index_list;
 	}
@@ -226,6 +231,7 @@ function filter_starting(check){
 		index=target_index[i];
 		let check=1;
 		//nesting_arr[index] level_arr[index]
+
 		for(let j=0;j<level_arr[index].length;j++){
 			if(!(level_arr[index][j]>=level_limit[j].value && nesting_arr[index][j]>=min_limit[j].value && nesting_arr[index][j]<=max_limit[j].value)){
 				check=0;
@@ -242,15 +248,34 @@ function filter_starting(check){
 	else{
 		filter_index_list=new_filter_index_list;
 	}
-	seting_filter();
+	setting_filter();
 }
+function es_min_max(check){
+	let min_limit=document.getElementsByName('all_min')[0].value;
+	let max_limit=document.getElementsByName('all_max')[0].value;
+	let level_limit=document.getElementsByName('all_level')[0].value;
+	if(check==0){
+		for(let i=0;i<essential_skill.length;i++){
+			document.getElementsByName('min_limit')[essential_skill[i]].value=min_limit;
+		}
+		min_max_limit_change(0);
+	}else if(check==1){
+		for(let i=0;i<essential_skill.length;i++){
+			document.getElementsByName('max_limit')[essential_skill[i]].value=max_limit;
+		}
+		min_max_limit_change(1);
+	}
+	else{
+		for(let i=0;i<essential_skill.length;i++){
+			document.getElementsByName('level_limit')[essential_skill[i]].value=level_limit;
+		}
+	}
+}
+
 
 window.onpageshow=function(event){
 	document.querySelector("combi_label").innerHTML=`<h3>발견된 총 조합 : ${combi_arr.length}개</h3>`;
 	document.getElementById("info_100").innerText=`최대 100가지 조합을 보여줍니다 ▼  찾아낸 조합 : ${combi_arr.length} | 필터 후 남은 조합 : ${combi_arr.length}`;
-	console.log(detail_arr);
-	console.log(combi_arr);
-	console.log(skill_level_list);
 	for(let i=0;i<combi_arr.length;i++){
 		filter_index_list.push(i);
 		all_index_list.push(i);
@@ -259,8 +284,11 @@ window.onpageshow=function(event){
 	skill_table(document.querySelector("input[name=job]"),document.querySelector("input[name=skill_level]"));
 	result_table(document.querySelector("input[name=job]"));
 	filter_table(document.querySelector("input[name=job]"));
-	console.log(nesting_arr);
-	console.log(level_arr);
-	console.log(essential_skill);
+	// console.log(detail_arr);
+	// console.log(combi_arr);
+	// console.log(skill_level_list);
+	// console.log(nesting_arr);
+	// console.log(level_arr);
+	// console.log(essential_skill);
 }
 

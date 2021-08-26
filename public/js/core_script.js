@@ -265,9 +265,6 @@ function LoadingWithMask() {
     //로딩중 이미지 표시
     document.getElementById('loadingImg').innerHTML=loadingImg;
 }
-
-
-출처: https://kkamikoon.tistory.com/168 [컴퓨터를 다루다]
 window.onpageshow=function(event){
 	skill_table(document.querySelector("select[name=job]"));
 }
