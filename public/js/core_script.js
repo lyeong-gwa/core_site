@@ -265,6 +265,7 @@ function LoadingWithMask() {
     //로딩중 이미지 표시
     document.getElementById('loadingImg').innerHTML=loadingImg;
 }
+
 window.onpageshow=function(event){
 	skill_table(document.querySelector("select[name=job]"));
 }
