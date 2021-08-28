@@ -16,6 +16,7 @@
     </head>
 
     <body >
+        
         <!-- Navigation-->
         <input type="hidden" id="job_skill_class" value="<%=JSON.stringify(job_skill_class)%>" />
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -67,10 +68,20 @@
                 <h3>스킬표</h3>
                 <input type="hidden" name="job" value="<%= results[0].job %>">
                 <input type="hidden" name="skill_level" value=<%= results[0].skill_level %>>
+                <input type="hidden" name="combi_set" value=<%= results[0].combi_list %>>
+                <input type="hidden" name="combi_size" value=<%= results[0].combi_list[0].length %>>
+                <input type="hidden" name="combi_set_size" value=0>
+                <input type="hidden" name="skill_arr_detail" value=<%= results[0].skill_arr_detail%>>
+                <input type="hidden" name="session_id" value=<%= results[0].session_ID%>>
+                <input type="hidden" name="essential_skill" value=<%= results[0].essential_skill%>>
+                
                 <skill_check></skill_check>
-
+                <combi_label></combi_label>
+                <filter_table></filter_table>
+                <h2 id="filter_load" style="text-align:center;"></h2>
                 <result_table></result_table>
                 <br>
+                <h3 id="info_100">최대 100가지 조합을 보여줍니다 ▼</h3>
                 <table class="table">
                     <thead class="thead-dark" style="background-color: black;">
                       <tr style="color: white">
@@ -83,21 +94,8 @@
                       </tr>
                     </thead>
                 </table>
-                <div style="width: 100%; height:300px; overflow-y:auto; overflow-x: hidden;">
-                    <table class="table">
-                        <tbody>
-                            <% for(let i = 0; i < results[0].combi_list.length; i++){ %>
-                                <th scope="row" class="text-center" valign="middle"><%= i%></th>
-                                <% for(let j = 0; j < results[0].combi_list[i].length; j++){ %>
-                                    <td><img style="float:left;padding-right:5px;"src="./tmp/<%= results[0].session_ID%>/skill<%= results[0].combi_list[i][j]%>.png" />
-                                        <div> 메인스킬: <%= results[0].skill_arr_detail[i][j][0]%>번 위치: <%= results[0].combi_list[i][j]%><br>보조스킬: <%= results[0].skill_arr_detail[i][j][1]%>, <%= results[0].skill_arr_detail[i][j][2]%>번</div></td>
-                                <% } %>
-                                    <td style="padding: auto; width:8%"><button class="btn btn-primary btn-block" style="font-size:12px;" onclick="check_button('<%= i%>','<%= results[0].combi_list[i] %>','<%= results[0].skill_arr_detail[i] %>','<%= results[0].skill_level %>')"><%= i%> : 확인</button></td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
+                <filter_start></filter_start>
+
                   
             </div>
         </section>
@@ -115,6 +113,7 @@
         <script src="js/core_result_sub.js"></script>
         
     </body>
+    
 </html>
 
 

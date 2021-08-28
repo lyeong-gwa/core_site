@@ -8,7 +8,7 @@ import json
 from ast import literal_eval
 import os 
 import time
-
+import random
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas import Series
@@ -149,7 +149,7 @@ def skill_classification(job,page_arr): # 'adel', page배열넣기
 
 
 
-def MakeDF(paged):#중복제외한 강화코어 출력
+def MakeDF(paged,essential_skill):#중복제외한 강화코어 출력
     df = pd.DataFrame(columns=range(paged[0].skill_kinds+3))
     count=0
     for page in paged:
@@ -176,6 +176,8 @@ def MakeDF(paged):#중복제외한 강화코어 출력
                                                         39,44,49,55,61,67,74,80,88,95,103,111]))
     #df.to_csv("level.csv")
     df=df.drop_duplicates(range(paged[0].skill_kinds+1),keep='first')
+    tmp_essential_skill=essential_skill+[df.shape[1]-2]
+    df=df.drop_duplicates(tmp_essential_skill,keep='first')
     #df.to_csv("level_after.csv")
     df=df.reset_index()
     df=df.drop("index", axis=1)
@@ -264,11 +266,13 @@ def Make_best_combi(combi,df,essential_skill,nesting):
 def return_core_combi(input_img,job,digit,essential_skill,nesting):
     paged= Skill_cutting(Matching(input_img))
     skill_classification(job,paged)
-    df = MakeDF(paged)
+    df = MakeDF(paged,essential_skill)
     only_2co,only_3co=Filter_df(df,essential_skill)
     core_2,core_3 = Make_combi(only_2co,only_3co)
     combi=trans_combi_list(core_3,core_2)
-    best_list=Make_best_combi(combi,df,essential_skill,nesting)
+    if len(combi)>400000:
+        combi=random.sample(combi,400000)
+    best_list=combi#Make_best_combi(combi,df,essential_skill,nesting) #combi
     return best_list,paged,df
 
 def createDirectory(directory): 
@@ -338,6 +342,7 @@ send_json['skill_arr_detail']=skill_arr_detail
 send_json['skill_level']=skill_level
 send_json['session_ID']=input_ID
 send_json['result_img_path']=result_img_path
+send_json['essential_skill']=essential_skill
 send_final=json.dumps(send_json, ensure_ascii=False, cls= NumpyEncoder)
 #shutil.rmtree(r"public/tmp/"+input_ID)
 fdd1=open("public/tmp/"+input_ID+"/result_log.txt","a")
