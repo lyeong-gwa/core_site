@@ -8,7 +8,7 @@ import json
 from ast import literal_eval
 import os 
 import time
-
+import random
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas import Series
@@ -270,6 +270,8 @@ def return_core_combi(input_img,job,digit,essential_skill,nesting):
     only_2co,only_3co=Filter_df(df,essential_skill)
     core_2,core_3 = Make_combi(only_2co,only_3co)
     combi=trans_combi_list(core_3,core_2)
+    if len(combi)>400000:
+        combi=random.sample(combi,400000)
     best_list=combi#Make_best_combi(combi,df,essential_skill,nesting) #combi
     return best_list,paged,df
 

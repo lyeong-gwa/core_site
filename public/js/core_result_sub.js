@@ -108,11 +108,13 @@ function filter_table(job){
 		insert_table_list='<td style="background-color: black;color: white">필터창</td><td colspan="3" style="background-color: black;color: white"><span></span></td><tr></tr>';
 		tmp='';
 		for(let i=0;i<skill_list.length;i++){
+			let checkbox_maincore=``;
 			let color_td='';
 			if(essential_skill.indexOf(i+'')!=-1){
 				color_td='style="background-color: rgb(255, 255, 128);"';
+				checkbox_maincore=`메인: <input type="checkbox" name="checkbox_maincore" value=${i} onchange="monitor_checkbox_maincore()" >`
 			}
-			tmp=tmp+`<td class="col-md-1" ${color_td}><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<br><span style="float:right">${option_form_min}~${option_form_max}중첩, ${option_form_level}레벨 이상</span></td>`;
+			tmp=tmp+`<td class="col-md-1" ${color_td}><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(2,skill_list[i].length-4)}<br><span style="float:right">${checkbox_maincore} ${option_form_min}~${option_form_max}중첩, ${option_form_level}레벨 이상</span></td>`;
 			if(i%2==1){
 				insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
 				tmp='';
@@ -136,6 +138,30 @@ function filter_table(job){
 	}
 	//console.log(document.getElementsByName('min_limit').length);
 }
+function monitor_checkbox_maincore(){
+	let checkbox_maincore=document.getElementsByName('checkbox_maincore');
+	let check_core=[];
+	for(let i=0;i<checkbox_maincore.length;i++){
+		if(checkbox_maincore[i].checked==true){
+			check_core.push(checkbox_maincore[i].value);
+		}
+	}
+	if(check_core.length>=combi_size){
+		for(let i=0;i<checkbox_maincore.length;i++){
+			if(checkbox_maincore[i].checked==false){
+				checkbox_maincore[i].disabled=true;
+			}
+		}
+	}
+	else{
+		for(let i=0;i<checkbox_maincore.length;i++){
+			if(checkbox_maincore[i].checked==false){
+				checkbox_maincore[i].disabled=false;
+			}
+		}
+	}
+}
+
 
 function check_button(i,detail,skill_level){
 	document.getElementById('result_combi').innerHTML=combi_arr[i];
@@ -214,13 +240,30 @@ function setting_filter(){
 	document.getElementById("info_100").innerText=`최대 100가지 조합을 보여줍니다 ▼  찾아낸 조합 : ${combi_arr.length} | 필터 후 남은 조합 : ${filter_index_list.length}`;
 }
 
-function filter_starting(check){
-	let min_limit=document.getElementsByName('min_limit');
+async function filter_starting(check){
+	LoadingWithMask(function(){
+		sub_filter_starting(function(){
+			closeLoadingWithMask();
+		},check);
+	});
+	//sub_filter_starting(check);
+	//closeLoadingWithMask();
+}
+
+function sub_filter_starting(cb,check){
+	setTimeout(function (){
+		let min_limit=document.getElementsByName('min_limit');
 	let max_limit=document.getElementsByName('max_limit');
 	let level_limit=document.getElementsByName('level_limit');
+	let checkbox_maincore=document.getElementsByName('checkbox_maincore');
 	let target_index=[];
 	let new_filter_index_list=[];
-
+	let check_core=[];
+	for(let i=0;i<checkbox_maincore.length;i++){
+		if(checkbox_maincore[i].checked==true){
+			check_core.push(checkbox_maincore[i].value);
+		}
+	}
 	if(check==0){
 		target_index=all_index_list;
 	}
@@ -231,14 +274,20 @@ function filter_starting(check){
 		index=target_index[i];
 		let check=1;
 		//nesting_arr[index] level_arr[index]
-
+		
 		for(let j=0;j<level_arr[index].length;j++){
 			if(!(level_arr[index][j]>=level_limit[j].value && nesting_arr[index][j]>=min_limit[j].value && nesting_arr[index][j]<=max_limit[j].value)){
 				check=0;
 				break;
 			}
 		}
-		if(check==1){
+		let merged=[];
+		for(let j=0;j<combi_arr[index].length;j++){
+			merged.push(detail_arr[index][3*j]);
+		}
+		merged=merged.concat(check_core);
+		
+		if(check==1 && merged.filter((item, pos) => merged.indexOf(item) === pos).length==combi_arr[index].length){
 			new_filter_index_list.push(index);
 		}
 	}
@@ -249,6 +298,8 @@ function filter_starting(check){
 		filter_index_list=new_filter_index_list;
 	}
 	setting_filter();
+	cb();
+	},100);
 }
 function es_min_max(check){
 	let min_limit=document.getElementsByName('all_min')[0].value;
@@ -270,7 +321,42 @@ function es_min_max(check){
 			document.getElementsByName('level_limit')[essential_skill[i]].value=level_limit;
 		}
 	}
+
 }
+
+function LoadingWithMask(cb) {
+	setTimeout(function (){
+	//화면의 높이와 너비를 구합니다.
+	var maskHeight = $(document.body).height();
+	var maskWidth  = window.document.body.clientWidth;
+	 
+	//화면에 출력할 마스크를 설정해줍니다.
+	var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+	  
+	//화면에 레이어 추가
+	$('body')
+		.append(mask)
+		
+	//마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
+	$('#mask').css({
+			'width' : maskWidth
+			,'height': maskHeight
+			,'opacity' :'0.3'
+	});
+  
+	//마스크 표시
+	$('#mask').show(); 
+	cb();
+	},100);
+
+}
+function closeLoadingWithMask() {
+	setTimeout(function(){
+		$('#mask').hide();
+		$('#mask').remove();
+	},100);
+}
+
 
 
 window.onpageshow=function(event){
