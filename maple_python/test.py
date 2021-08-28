@@ -80,7 +80,10 @@ def Matching(base_page,target_image='zero_target.png',thr=0.9): #페이지 1차�
             x_max=max(loc[::-1][0])
             y_min=min(loc[::-1][1])
             y_max=max(loc[::-1][1])
+            x_min=max(50,x_min)
+            y_min=max(30,y_min)
             i_base.user_page_image=Image.fromarray(base[y_min-30:y_max+90,x_min-50:x_max+75])
+
         else:             
             i_base.user_page_image=Image.fromarray(base)
         #cv2.imwrite('result_image/result{}.png'.format(count), base)
