@@ -347,6 +347,9 @@ send_final=json.dumps(send_json, ensure_ascii=False, cls= NumpyEncoder)
 #shutil.rmtree(r"public/tmp/"+input_ID)
 fdd1=open("public/tmp/"+input_ID+"/result_log.txt","a")
 fdd1.write('{} {} {} {} {}\n'.format(job,nesting,digit,essential_skill,time.ctime()))
+if len(combi_list)>10:
+    combi_list=combi_list[:10]
+
 for i in combi_list:
     fdd1.write(str(i)+'\n')
 fdd1.close()
