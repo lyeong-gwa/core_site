@@ -67,7 +67,12 @@ router.post('/',upload.array('profile_pt'), async(req, res) => {
   let options = {mode: 'json',pythonPath: '',pythonOptions: ['-u'],scriptPath: '',args: JSON.stringify(json_info)};
   
   PythonShell.run(__dirname+'/../maple_python/test.py',options,function(err,results){
-    if(err) throw err;
+    if(err){
+      res.type("text/plain");
+    res.send(
+      "오류가 발생하였습니다 다음을 확인해주세요\n1.이미지는 PNG형식이여야 합니다.\n2.스킬잠금을 해제하셨는지 확인해주세요."
+    );
+    }
     res.render("core_result.ejs",{results,job_skill_class});
   });
 
