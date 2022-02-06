@@ -24,7 +24,7 @@ output = core_calc(input_dict)
 send_output = json.dumps(output, ensure_ascii=False)
 
 fdd1=open('result_log.txt',"a")
-fdd1.write('{} {} {} {} {}\n'.format(input_dict['job'],input_dict['core_num'],input_dict['prior_list'],time.ctime()))
+fdd1.write('{}~{}~{}~{}\n'.format(input_dict['job'],input_dict['core_num'],input_dict['prior_list'],time.ctime()))
 fdd1.close()
 
 print(send_output)
