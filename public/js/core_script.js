@@ -94,49 +94,20 @@ function button_checking(targetObj) {
 }
 
 
-function skill_table(job){
-	let JsonData = document.getElementById("job_skill_class").value;
-	let myJsonData = JSON.parse(JsonData);
-
-	string_job=job.options[job.selectedIndex].value;
-	//skill_list=job_skill(job.options[job.selectedIndex].value);
-	skill_list=myJsonData[string_job];
-	if(skill_list!=null){
-		insert_table_list='';
-		tmp='';
-		for(let i=0;i<skill_list.length;i++){
-			tmp=tmp+`<td class="col-md-1"><input type="checkbox" id="check_skill_${i}" name="skill_box" value="${i}"/><label for="check_skill_${i}"><img src="./maple_img/${string_job}/${skill_list[i]}" />${skill_list[i].slice(0,2)}:${skill_list[i].slice(2,skill_list[i].length-4)}</label></td>`;
-			if(i%3==2){
-				insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
-				tmp='';
-			}
-		}
-		if(skill_list.length%3!=0){
-			insert_table_list=insert_table_list+"<tr>"+tmp+"</tr>";
-			tmp='';
-		}
-		document.querySelector('skill_check').innerHTML=`<table class="table table-striped">${insert_table_list}</table>`;
-	}
-	else{
-		document.querySelector('skill_check').innerHTML='';
-	}
-}
-
 document.querySelector("#info").addEventListener("submit",bansubmit);
-
- function bansubmit(A){
-	 
-	let chkList = document.querySelectorAll("input[name=skill_box]:checked");
+function bansubmit(A){
+	let select_class = document.querySelector('select[name="classification_job"]').value;
+	let select_job = document.querySelector('select[name="job"]').value;
 	let chkprofile = document.querySelector("input[name=profile_pt]").value;
 	let chkprofile_count_limit=document.querySelector("input[name=profile_pt]").files.length;
-	if(chkList.length<1){
-		alert("강화스킬를 선택해주세요!");
-		A.preventDefault();
-	}else if(chkprofile==''){
+	if(chkprofile==''){
 		alert("코어창 상태이미지를 업로드해주세요!");
 		A.preventDefault();
 	}else if(chkprofile_count_limit>15){
 		alert("이미지파일은 최대 15개로 제한합니다");
+		A.preventDefault();
+	}else if(select_class == 'bad' || select_job == 'bad'){
+		alert("직업을 선택해주세요!");
 		A.preventDefault();
 	}else{
 		document.getElementById('post_button').disabled = true;
@@ -236,7 +207,6 @@ function classification_job_f(choice_class){
 			document.querySelector('select[name="job"]').innerHTML=``
 			break;
 	}
-	skill_table(document.querySelector("select[name=job]"));
 }
 function LoadingWithMask() {
     //화면의 높이와 너비를 구합니다.
@@ -267,5 +237,4 @@ function LoadingWithMask() {
 }
 
 window.onpageshow=function(event){
-	skill_table(document.querySelector("select[name=job]"));
 }

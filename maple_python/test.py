@@ -152,7 +152,7 @@ def skill_classification(job,page_arr): # 'adel', page배열넣기
 
 
 
-def MakeDF(paged,essential_skill):#중복제외한 강화코어 출력
+def MakeDF(paged):#중복제외한 강화코어 출력
     df = pd.DataFrame(columns=range(paged[0].skill_kinds+3))
     count=0
     for page in paged:
@@ -179,8 +179,7 @@ def MakeDF(paged,essential_skill):#중복제외한 강화코어 출력
                                                         39,44,49,55,61,67,74,80,88,95,103,111]))
     #df.to_csv("level.csv")
     df=df.drop_duplicates(range(paged[0].skill_kinds+1),keep='first')
-    tmp_essential_skill=essential_skill+[df.shape[1]-2]
-    df=df.drop_duplicates(tmp_essential_skill,keep='first')
+
     #df.to_csv("level_after.csv")
     df=df.reset_index()
     df=df.drop("index", axis=1)
@@ -215,73 +214,30 @@ def Make_skill_list(df):
     return core_arr
     
 
-    
-def Make_combination(df,digit):
-    core_arr=Make_skill_list(df)
-    qu=[]
-    for i in list(combinations(np.array(range(len(core_arr))),min(digit,len(core_arr)))):
-        tmp=[]
-        for j in i:
-            tmp.append(core_arr[j])
-        qu.append(list(list(product(*tmp))))
-    return list(itertools.chain(*qu))
-    
-    
-def Filter_df(df,essential_skill):
-        
-    only_3co=df[df.iloc[:,essential_skill][df>0].notnull().sum(axis=1)==3]
-    only_2co=df[df.iloc[:,essential_skill][df>0].notnull().sum(axis=1)==2]
-    only_2co=only_2co[~only_2co.iloc[:,-2].isin(np.unique(only_3co.iloc[:,-2]))]
-    
-    return only_2co,only_3co
-
-def trans_combi_list(core_3,core_2):
-    tmp=[]
-    for i in list(product(*[core_3,core_2])):
-        tmp.append(list(i[0])+list(i[1]))
-    return tmp
-
-def Make_combi(only_2co,only_3co):
-    core_3=Make_combination(only_3co,digit)
-    core_2=Make_combination(only_2co,digit-len(core_3[0]))
-    return core_2,core_3
-
-def Make_best_combi(combi,df,essential_skill,nesting):
-    max_score=0
-    best_list=[]
-
-    for comb in combi:
-        table=df[df.iloc[:,-1].isin(comb)]
-        score_arr=table.iloc[:,essential_skill].sum(axis=0)
-        score_arr[score_arr[score_arr>int(nesting)].index]=int(nesting)
-
-        score=score_arr.sum()
-        if max_score<score:
-            max_score=score
-            best_list=[]
-            best_list.append(comb)
-        elif max_score==score:
-            best_list.append(comb)
-
-    return best_list
-
-
-def return_core_combi(input_img,job,digit,essential_skill,nesting):
+def return_core_combi(input_img,job):
     paged= Skill_cutting(Matching(input_img))
     skill_classification(job,paged)
-    df = MakeDF(paged,essential_skill)
-    only_2co,only_3co=Filter_df(df,essential_skill)
-    core_2,core_3 = Make_combi(only_2co,only_3co)
-    combi=trans_combi_list(core_3,core_2)
-    if len(combi)>400000:
-        combi=random.sample(combi,400000)
-    best_list=combi#Make_best_combi(combi,df,essential_skill,nesting) #combi
-    return best_list,paged,df
+    df = MakeDF(paged)
+    skill_arr = change_table(df,paged)
+
+    return paged,df,skill_arr
 
 def createDirectory(directory): 
     if not os.path.exists(directory): 
         os.makedirs(directory) 
 
+def change_table(table,paged):
+    output=[]
+    skill_arr=[]
+    for i in paged:
+        skill_arr=skill_arr+i.skill_arr
+
+    for row in table.iterrows():
+        tmp=skill_arr[np.array(row[1])[-1]]
+        tmp.append(np.array(row[1])[-3])
+        tmp.append(np.array(row[1])[-1])
+        output.append(tmp)
+    return output
 
 # base64 받음
 inputs = sys.argv[1]
@@ -296,69 +252,32 @@ input_img=[]
 for i in file_name:
     input_img.append(page(Image.open(i)))
 job=input_dict['job']
-nesting=input_dict['nesting']
-digit=input_dict['core_num']
-essential_skill=input_dict['skill_box']
 
 
 os.chdir("./maple_python")
-
-combi_list,page_info,df=return_core_combi(input_img,"job/"+job,digit,essential_skill,nesting)
-
-skill_arr=[]#스킬조합 [2,3,4] json에 넣을 데이터 아님
-for i in page_info:
-    skill_arr=skill_arr+i.skill_arr
-
-skill_arr_detail=[]#스킬조합의 관련 스킬목록 [[1,2,3],[2,3,4],[3,4,5]]
-for i in combi_list:
-    tmp_list=[]
-    for j in i:
-        tmp_list.append(skill_arr[j])
-    skill_arr_detail.append(tmp_list)
-
-skill_level=[0]*page_info[0].skill_kinds #json에 넣을 스킬종류에따른 합산레벨
-
+page_info,df,skill_arr=return_core_combi(input_img,"job/"+job)
 os.chdir("../")
+
 for i in file_name:
     os.remove(i)
 createDirectory("public/tmp/"+input_ID)
 
 count_1 = 0
 count_2 = 0
-result_img_path=[]
+cv_img_path=[]
 for tmp_page in page_info:
-    tmp_page.user_page_image.save("public/tmp/"+input_ID+"/result"+format(count_1,'02')+".png")
-    result_img_path.append("./tmp/"+input_ID+"/result"+format(count_1,'02')+".png")
+    tmp_page.user_page_image.save("public/tmp/"+input_ID+"/"+str(count_1)+".png")
+    cv_img_path.append("./tmp/{}/{}.png".format(input_ID,count_1))
     count_1=count_1+1
     for tmp_skill_img in tmp_page.skill_image:
         tmp_skill_img.save("public/tmp/"+input_ID+"/skill"+str(count_2)+".png")
         count_2=count_2+1
     
-df_tmp=df.iloc[:,-3:-1].drop_duplicates()
-for i,j in zip(df_tmp.iloc[:,-1].values,df_tmp.iloc[:,-2].values):
-    skill_level[i]=j
-#df.to_csv("level.csv")
 send_json=OrderedDict()
 send_json['job']=input_dict['job']
-send_json['combi_list']=combi_list
-send_json['skill_arr_detail']=skill_arr_detail
-send_json['skill_level']=skill_level
 send_json['session_ID']=input_ID
-send_json['result_img_path']=result_img_path
-send_json['essential_skill']=essential_skill
+send_json['skill_arr']=skill_arr
+send_json['cv_img_path']=cv_img_path
 send_final=json.dumps(send_json, ensure_ascii=False, cls= NumpyEncoder)
-#shutil.rmtree(r"public/tmp/"+input_ID)
-fdd1=open("public/tmp/"+input_ID+"/result_log.txt","a")
-fdd1.write('{} {} {} {} {}\n'.format(job,nesting,digit,essential_skill,time.ctime()))
-if len(combi_list)>10:
-    combi_list=combi_list[:10]
-
-for i in combi_list:
-    fdd1.write(str(i)+'\n')
-fdd1.close()
-
-fdd=open("result_log.txt","a")
-fdd.write('{} {} {} {} {}\n'.format(job,nesting,digit,essential_skill,time.ctime()))
-fdd.close()
 
 print(send_final)

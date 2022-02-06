@@ -44,24 +44,16 @@ router.get('/', (req, res) => {
 });
 
 router.post('/',upload.array('profile_pt'), async(req, res) => {
-   nesting=req.body.nesting
    job=req.body.job;
-   core_num=req.body.core_num;
-   skill_box=req.body.skill_box;
    img_path=``;
-   img_mime=``;
-   send_data=``;
    const job_skill_class = job_skill.search_job_skill(__dirname+'/../public/maple_img');
    for(let i=0;i<req.files.length;i++){
      let {mimetype,path} = req.files[i];
-     
      img_path=`${img_path}"${path}",`;
-     img_mime=`${img_mime}"${mimetype}",`;
    }
    img_path=img_path.substring(0,img_path.length-1);
-   img_mime=img_mime.substring(0,img_mime.length-1);
 
-  json_info=`{"job":"${job}","ID":"${req.sessionID}","nesting":"${nesting}","core_num":${core_num},"img_path":[${img_path}],"skill_box":[${skill_box}],"img_mime":[${img_mime}]}`; 
+  json_info=`{"job":"${job}","ID":"${req.sessionID}","img_path":[${img_path}]}`; 
   json_info=json_info.replace(/\\/g,`/`);
   json_info=json_info.replace(`\\`,`/`);
   let options = {mode: 'json',pythonPath: '',pythonOptions: ['-u'],scriptPath: '',args: JSON.stringify(json_info)};

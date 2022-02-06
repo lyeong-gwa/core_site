@@ -11,6 +11,7 @@ dotenv.config();
 const coreRouter = require('./routes/core');
 const userRouter = require('./routes/user');
 const robotRouter = require('./routes/robot');
+const ajaxRouter = require('./routes/ajax');
 let rateLimit = require("express-rate-limit");
 const app = asyncify(express());
 app.engine('html', require('ejs').renderFile);
@@ -42,6 +43,7 @@ app.use(session({
 app.use('/', coreRouter);
 app.use('/user', userRouter);
 app.use('/robots.txt', robotRouter);
+app.use('/ajax', ajaxRouter);
 app.use((req, res, next) => {
   res.status(404).send('Not Found');
 });

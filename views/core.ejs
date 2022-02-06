@@ -14,10 +14,6 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
         
-
-
-
-
     </head>
     <body >
         
@@ -52,7 +48,7 @@
                 <form method="post" id="info" enctype="multipart/form-data">
                     분류 : 
                     <select class="selectpicker" name='classification_job' onchange="classification_job_f(this)">
-                        <option value="bad"></option>>
+                        <option value="bad"></option>
                         <option value="adventurer">모험가</option>
                         <option value="cygnus">시그너스기사단</option>
                         <option value="resistance">레지스탕스</option>
@@ -65,23 +61,10 @@
                         <option value="kinesis">키네시스</option>
                       </select>
                     직업 : 
-                    <select class="selectpicker" name='job' onchange="skill_table(this)">
+                    <select class="selectpicker" name='job'>
                         <option value="bad">직업선택</option>
                       </select>
-                      중첩제한 : 
-                      <select class="selectpicker" name='nesting'>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                      </select>
-                      사용코어칸 수 : 
-                      <select class="selectpicker" name='core_num'>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                      </select>
+
                       캡처사진 업로드(PNG사진,최대 15개) :
                       <input type="file" style="background-color: #e2e2e2;width: 220px;" name="profile_pt" accept=".gif, .jpg, .png" multiple id="profile_pt" onchange="button_checking(this)"/><br>
 
@@ -89,7 +72,6 @@
 
                     <h1 class="display-4 fw-bolder">강화스킬 선택</h1>
 
-                        <skill_check></skill_check>
                 <div>
 
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
