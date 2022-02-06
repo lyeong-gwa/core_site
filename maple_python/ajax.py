@@ -3,6 +3,7 @@ from itertools import product, combinations
 import os
 from ast import literal_eval
 import sys
+import time
 
 def core_calc(json_obj):
     product_list=list(combinations(json_obj["main_list"],min(int(json_obj["core_num"]),len(json_obj["main_list"]))))
@@ -21,5 +22,9 @@ input_dict=literal_eval(input_str)
 
 output = core_calc(input_dict)
 send_output = json.dumps(output, ensure_ascii=False)
+
+fdd1=open('result_log.txt',"a")
+fdd1.write('{} {} {} {} {}\n'.format(input_dict['job'],input_dict['core_num'],input_dict['prior_list'],time.ctime()))
+fdd1.close()
 
 print(send_output)
