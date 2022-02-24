@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        
+        <title>코강유틸</title>
+        <!-- Favicon-->
+        <link rel="shortcut icon" href="#">
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-DE7C8YV70K"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+  		gtag('config', 'G-DE7C8YV70K');
+	</script>
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6143364638000006"
+	    	 crossorigin="anonymous"></script>
+
+
+    </head>
+    <body >
+        
+        <input type="hidden" id="job_skill_class" value="<%=JSON.stringify(job_skill_class)%>" />
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="">서비스</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="">메이플 코어강화</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">코어강화</h1>
+		    <p class="lead fw-normal text-white-50 mb-0">코어창 이미지를 업로드하면 자동으로 코어강화 방식을 제안하는 서비스 <br><br>1.강화스킬 잠금을 모두 해제해주세요!<br>2.이미지 업로드전 한번 더 확인하기!<br><a href='https://www.youtube.com/watch?v=oLNux7g4Cdk' target='_blank'>시연영상 링크</a><br><a href='https://lyeong-gwa.tistory.com/49' target='_blank'>사용법 링크</a></p>
+                    
+                </div>
+            </div>
+	</header>
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container">
+                <form method="post" id="info" enctype="multipart/form-data">
+                    분류 : 
+                    <select class="selectpicker" name='classification_job' onchange="classification_job_f(this)">
+                        <option value="bad"></option>
+                        <option value="adventurer">모험가</option>
+                        <option value="cygnus">시그너스기사단</option>
+                        <option value="resistance">레지스탕스</option>
+                        <option value="daemon">데몬</option>
+                        <option value="hero">영웅</option>
+                        <option value="nova">노바</option>
+                        <option value="Lev">레프</option>
+                        <option value="anima">아니마</option>
+                        <option value="zero">제로</option>
+                        <option value="kinesis">키네시스</option>
+                      </select>
+                    직업 : 
+                    <select class="selectpicker" name='job'>
+                        <option value="bad">직업선택</option>
+                      </select>
+
+                      캡처사진 업로드(PNG사진,최대 15개) :
+                      <input type="file" style="background-color: #e2e2e2;width: 220px;" name="profile_pt" accept=".gif, .jpg, .png" multiple id="profile_pt" onchange="button_checking(this)"/><br>
+
+                <div class="container">
+
+                    <h1 class="display-4 fw-bolder">강화스킬 선택</h1>
+
+                <div>
+
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <checking></checking>
+                    </div>
+                    <button_switch></button_switch>
+                </div>  
+                <div class="text-center margin_auto">
+                    <button id='post_button'class="btn btn-primary btn-block ">확인하기!</button>
+                </div>       
+                <div id='loadingImg'><img src='./null.png' style='position: relative; display: block; margin: 0px auto;'/></div>         
+                </form>
+            </div>
+        </section>
+
+ 	<ins class="kakao_ad_area" style="display:none;" 
+  		data-ad-unit    = "DAN-CpE5DTU3ripuHOsL" 
+   		data-ad-width   = "320" 
+    		data-ad-height  = "100"></ins> 
+	<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">2021 © coregemstone.com All Rights Reserved. coregemstone.com is not associated with NEXON Korea.</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/core_script.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </body>
+</html>
+
