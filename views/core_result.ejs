@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>코강유틸</title>
+        <!-- Favicon-->
+        <!--<link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />-->
+        <link rel="shortcut icon" href="#">
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-DE7C8YV70K"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+  		gtag('config', 'G-DE7C8YV70K');
+	</script>
+    </head>
+
+    <body >
+        
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="">서비스</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="">메이플 코어강화</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">코어강화</h1>
+		    <p class="lead fw-normal text-white-50 mb-0">코어창 이미지를 업로드하면 자동으로 코어강화 방식을 제안하는 서비스<br><br>이미지를 먼저 확인하시고 이상하면 다시 켭쳐하여 시도해주세요</p>
+                </div>
+            </div>
+	</header>
+
+        <input type="hidden" name="job" value="<%= results[0].job %>">
+        <input type="hidden" name="session_id" value=<%= results[0].session_ID%>>
+        <input type="hidden" name="skill_arr" value=<%= results[0].skill_arr%>>
+
+
+        <section class="py-5">
+            <div class="container">
+                <div id="carouselExampleControls" class="carousel slide" data-bs-touch="false" data-bs-interval="false">
+                    <div class="carousel-inner">
+                        <% for(let i = 0; i < results[0].cv_img_path.length; i++) {%>
+                            <% if(i==0){ %>
+                                <div id="img0" class="carousel-item active">
+                                    <img class="d-block w-75 margin_auto active" src=<%= results[0].cv_img_path[i]%>>
+                                </div>
+                            <% }else{ %>
+                                <div id="img<%= i%>" class="carousel-item ">
+                                    <img class="d-block w-75 margin_auto" src=<%= results[0].cv_img_path[i]%>>
+                                </div>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <br><br>
+                <skill_check></skill_check>
+                <br><br>
+                <h1>우선순위: <prior_skill></prior_skill></h1>
+                <div class="row">
+                    <div class="col-sm-6" style="height:900px; overflow-y:auto; overflow-x: hidden;">
+                        <core_table></core_table>
+                    </div>
+
+                    <div class="col-sm-6" style="height:900px; overflow-y:auto; overflow-x: hidden;">
+                        <table class="table table-striped">
+                            <thead class="thead-dark" style="background-color: black;">
+                                <tr style="text-align: left; color: white">
+                                    <th class="col-md-1" colspan="3">
+                                        <h3>조합식 찾기 (↑스킬표 체크 후 진행)</h3>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <h4>2중,3중 코어만 사용합니다.</h4>
+                        <h4>상황에 따라 조합에 쓰인 코어수가 적을 수 있습니다.</h4>
+                        <h4>너무 많은 코어조합이 있으면 약 200만개로 제한됩니다.</h4>
+                        사용할 코어칸 수 : 
+                        <select class="selectpicker" id='core_num'>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6</option>
+			  <option>7</option>
+                        </select>
+                        서브코어도 사용 <input type="checkbox" id="sub_core_use">
+                        <button id='post_button'class="btn btn-primary btn-block " onclick='request_core_calc(this)'>조합찾기</button><br>
+                        찾은 조합 수 : <len_combi></len_combi>
+                        <br><br>
+                        <filter_table></filter_table>
+                        <filter_result_table></filter_result_table>
+                    </div>
+                </div>
+                <br><br>
+                <result_table></result_table>
+            </div>
+        </section>
+	
+	<ins class="kakao_ad_area" style="display:none;" 
+	 	data-ad-unit    = "DAN-dvjY8SUWMc6Jhkez" 
+	  	data-ad-width   = "320" 
+		data-ad-height  = "100"></ins> 
+	<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+         
+
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">2021 © coregemstone.com All Rights Reserved. coregemstone.com is not associated with NEXON Korea.</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="js/core_result_sub.js"></script>
+        
+    </body>
+    
+</html>
+
+
