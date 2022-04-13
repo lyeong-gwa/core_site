@@ -237,4 +237,5 @@ function LoadingWithMask() {
 }
 
 window.onpageshow=function(event){
+
 }
