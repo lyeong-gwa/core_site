@@ -103,8 +103,8 @@ function bansubmit(A){
 	if(chkprofile==''){
 		alert("코어창 상태이미지를 업로드해주세요!");
 		A.preventDefault();
-	}else if(chkprofile_count_limit>15){
-		alert("이미지파일은 최대 15개로 제한합니다");
+	}else if(chkprofile_count_limit>30){
+		alert("이미지파일은 최대 30개로 제한합니다");
 		A.preventDefault();
 	}else if(select_class == 'bad' || select_job == 'bad'){
 		alert("직업을 선택해주세요!");
