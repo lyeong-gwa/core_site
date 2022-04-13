@@ -29,7 +29,7 @@ const fileFilter = function(req,file,cb){
   router.post('/',upload.array('file1'), async(req, res) => {
      let paths = [];
      for(let i=0;i<req.files.length;i++){
-         paths.push("http://127.0.0.1:4000/"+req.files[i].path.substr(7));
+         paths.push("http://www.coregemstone.com/"+req.files[i].path.substr(7));
        }
     res.header("Access-Control-Allow-Origin", "*");
     return res.send({'path':paths});
