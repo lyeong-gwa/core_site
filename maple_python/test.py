@@ -24,6 +24,8 @@ class page:
     def __init__(self,page_image):
         self.page_image=page_image
 
+
+
 def search_image(base,template_arr,thr=0.90): #pil형 이미지 두개 input base이미지에 template 이미지가 있다면 true
         imgray = cv2.cvtColor(np.array(base),cv2.COLOR_BGR2GRAY)
         return_value=-1
@@ -96,10 +98,13 @@ def Matching(base_page,target_image='zero_target.png',thr=0.9): #페이지 1차�
 
 def Skill_cutting(page_arr):#page_arr에 스킬이미지 정보드 붙임
     count=0
+    mask=Image.open("mask.png")
     for page in page_arr:
         img_return=[]
         for x,y in zip(page.x,page.y):
-            img_return.append(page.page_image.crop((x-10,y-6,x+30,y+44)))
+            crop_img = page.page_image.crop((x - 10, y - 6, x + 30, y + 44)) 
+            #crop_img.paste(mask, (4, 15), mask.convert('RGBA')) #유지보수
+            img_return.append(crop_img)
         page_arr[count].skill_image=img_return
         count=count+1
     return page_arr
